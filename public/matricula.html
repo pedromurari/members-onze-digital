@@ -2221,7 +2221,11 @@ const SB_HEADERS = {
   'apikey': SUPABASE_KEY,
   'Authorization': `Bearer ${SUPABASE_KEY}`,
   'Content-Type': 'application/json',
-  'Prefer': 'return=representation'
+  // return=minimal: o anon key nao tem (e nao deve ter) permissao de leitura
+  // em leads/alunos, entao pedir a linha de volta (return=representation) faz
+  // o Postgres recusar com "permission denied" antes mesmo de gravar. Nenhuma
+  // chamada deste arquivo usa o corpo de resposta de um insert/patch.
+  'Prefer': 'return=minimal'
 };
 
 async function sb(path, opts = {}) {
@@ -2484,14 +2488,15 @@ document.getElementById('matricula-form').addEventListener('submit', async (e) =
   try {
     const phone9 = data.telefone.replace(/\D/g, '').slice(-9);
 
-    // 1. Buscar lead existente
-    const [byEmail, byPhone] = await Promise.all([
-      sb(`leads?email=eq.${encodeURIComponent(data.email)}&select=id`),
-      sb(`leads?whatsapp=ilike.*${phone9}*&select=id`)
-    ]);
-
-    const existing = [...(byEmail || []), ...(byPhone || [])];
-    const lead = existing[0] || null;
+    // 1. Buscar lead/aluno existentes via função segura no banco — o anon key
+    // deste formulário não tem (nem deve ter) permissão de leitura direta em
+    // leads/alunos, pois isso exporia CPF/RG/dados de todo mundo publicamente.
+    const existente = await sb('rpc/matricula_checar_existente', {
+      method: 'POST',
+      headers: { 'Prefer': 'return=representation' },
+      body: JSON.stringify({ p_email: data.email, p_phone9: phone9 }),
+    }) || {};
+    const lead = existente.lead_id ? { id: existente.lead_id } : null;
 
     const leadPayload = {
       nome:             data.nome,
@@ -2550,9 +2555,8 @@ document.getElementById('matricula-form').addEventListener('submit', async (e) =
       ...(vendedorNome                              ? { vendedor: vendedorNome, vendedor_id: vendedorNome } : {}),
     };
 
-    const existingAluno = await sb(`alunos?email=eq.${encodeURIComponent(data.email)}&select=id`);
-    if (existingAluno?.length > 0) {
-      await sb(`alunos?id=eq.${existingAluno[0].id}`, { method: 'PATCH', body: JSON.stringify(alunoPayload) });
+    if (existente.aluno_id) {
+      await sb(`alunos?id=eq.${existente.aluno_id}`, { method: 'PATCH', body: JSON.stringify(alunoPayload) });
     } else {
       await sb('alunos', { method: 'POST', body: JSON.stringify(alunoPayload) });
     }
