@@ -13,6 +13,7 @@ export async function criarAcessoMembro(params: {
   nome: string
   whatsapp?: string
   produtoId: string
+  expiraEm?: Date
 }): Promise<{ userId: string; loginUrl: string }> {
   const admin = createAdminClient()
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.idmpsi.com.br'
@@ -35,8 +36,13 @@ export async function criarAcessoMembro(params: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   await (admin.from('enrollments') as any)
     .upsert(
-      { user_id: userId, product_id: params.produtoId, is_active: true },
-      { onConflict: 'user_id,product_id', ignoreDuplicates: true },
+      {
+        user_id: userId,
+        product_id: params.produtoId,
+        is_active: true,
+        expires_at: params.expiraEm?.toISOString() ?? null,
+      },
+      { onConflict: 'user_id,product_id', ignoreDuplicates: false },
     )
 
   return { userId, loginUrl: data.properties.action_link }

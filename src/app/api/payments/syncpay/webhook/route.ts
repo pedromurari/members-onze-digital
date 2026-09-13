@@ -20,7 +20,14 @@ const STATUS_MAP: Record<string, string> = {
 // Produtos que dão acesso à área de membros (id em `products`) quando aprovados.
 const PRODUTO_ID_MEMBROS: Record<string, string> = {
   'cicatrizes-que-curam': 'b6fe9e61-0a92-40c2-ad0b-5ebbc3d17b5c',
+  // Mentoria NPS (R$100/mês): cada pagamento aprovado renova a matrícula por
+  // +30 dias. Só entra em ação quando o produto 'mentoria-nps' existir de
+  // fato no SyncPay com esse mesmo slug — até lá, fica inerte.
+  'mentoria-nps': 'b018279e-62de-447c-b834-97d15e6351a0',
 }
+
+// Produtos com renovação mensal (em vez de acesso vitalício/até o fim da turma).
+const PRODUTOS_MENSAIS = new Set(['mentoria-nps'])
 
 // E-mail/WhatsApp já configurados e funcionando no outro sistema do grupo
 // (onze-digital-main) — reaproveitados aqui em vez de duplicar integração.
@@ -43,11 +50,16 @@ async function liberarAcessoEnotificar(pedido: {
   let loginUrl = ''
 
   if (produtoId) {
+    const expiraEm = PRODUTOS_MENSAIS.has(pedido.produto_slug)
+      ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+      : undefined
+
     const acesso = await criarAcessoMembro({
       email: pedido.comprador_email,
       nome: pedido.comprador_nome,
       whatsapp: pedido.comprador_telefone,
       produtoId,
+      expiraEm,
     })
     loginUrl = acesso.loginUrl
   }
