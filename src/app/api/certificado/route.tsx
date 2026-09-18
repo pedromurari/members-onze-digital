@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { renderToBuffer, Font } from '@react-pdf/renderer'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { sincronizarCertificadoNoCrm } from '@/lib/certificadoCrmSync'
 import { CertificadoPDF } from '@/lib/pdf/certificado'
 import { getLiveDates } from '@/lib/pdf/get-live-dates'
 import fs from 'fs'
@@ -176,6 +177,14 @@ export async function POST(request: NextRequest) {
       },
       { status: 400 }
     )
+  }
+
+  // 10.5. Sincroniza com o Kanban do lançamento ativo no Sistema Onze Digital
+  // (best-effort — nunca pode impedir o aluno de receber o certificado)
+  try {
+    await sincronizarCertificadoNoCrm({ nome, email: emailNorm, telefone: telefoneNorm })
+  } catch (e: unknown) {
+    console.error('[certificado] erro ao sincronizar com o CRM:', (e as Error).message)
   }
 
   // 11. Gerar PDF — JSX em .tsx resolve o erro de tipo do renderToBuffer
