@@ -1,4 +1,4 @@
-const WA_NUMBER = '5511919434040'
+const WA_NUMBER = '5511965781940'
 const WA_MESSAGE = 'Olá! Vi que as matrículas da Formação em Psicanálise estão abertas e quero saber mais.'
 
 export const WA_URL = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(WA_MESSAGE)}`

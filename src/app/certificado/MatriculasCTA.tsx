@@ -28,7 +28,7 @@ export function MatriculasCTA() {
         </h3>
         <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>
           Continue sua jornada e se aprofunde na Psicanálise Prática. Mensalidades de{' '}
-          <strong className="text-white">R$ 110,00 no boleto</strong>.
+          <strong className="text-white">R$ 150,00 no boleto</strong>.
         </p>
       </div>
 
