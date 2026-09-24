@@ -12,7 +12,7 @@ import {
 // CONFIG — edite aqui sem tocar no restante
 // ─────────────────────────────────────────────
 
-const WA_GROUP_URL   = 'https://chat.whatsapp.com/PENDENTE_GRUPO_VIP_45'
+const WA_GROUP_URL   = 'https://chat.whatsapp.com/Fc4fwSt0p5t243DeUUEhSt'
 const INTRO_VIDEO_ID = ''
 const EBOOK_URL      = '#'
 const BANNER_URL     = ''  // ex: '/banner-sdw45.png'
@@ -40,29 +40,29 @@ const AULAS: Aula[] = [
   {
     id: 1,
     titulo: 'Aula 1 — O Despertar',
-    data: '18/08 · Terça-feira',
+    data: '06/10 · Terça-feira',
     horario: '20h (Horário de Brasília)',
-    youtubeUrl: 'https://youtube.com/live/PENDENTE_AULA_1',
-    imageUrl: 'https://img.youtube.com/vi/PENDENTE_AULA_1/maxresdefault.jpg',
-    gcal: { titulo: 'SDW #45 — Aula 1', inicio: '20260818T230000Z', fim: '20260819T010000Z', desc: 'Aula 1 da Semana do Despertar #45 · IDM' },
+    youtubeUrl: 'https://youtube.com/live/8OHnNPGeLeo',
+    imageUrl: 'https://img.youtube.com/vi/8OHnNPGeLeo/maxresdefault.jpg',
+    gcal: { titulo: 'SDW #45 — Aula 1', inicio: '20261006T230000Z', fim: '20261007T010000Z', desc: 'Aula 1 da Semana do Despertar #45 · IDM' },
   },
   {
     id: 2,
     titulo: 'Aula 2 — A Cura',
-    data: '19/08 · Quarta-feira',
+    data: '07/10 · Quarta-feira',
     horario: '20h (Horário de Brasília)',
-    youtubeUrl: 'https://youtube.com/live/PENDENTE_AULA_2',
-    imageUrl: 'https://img.youtube.com/vi/PENDENTE_AULA_2/maxresdefault.jpg',
-    gcal: { titulo: 'SDW #45 — Aula 2', inicio: '20260819T230000Z', fim: '20260820T010000Z', desc: 'Aula 2 da Semana do Despertar #45 · IDM' },
+    youtubeUrl: 'https://youtube.com/live/OCBmfNhSfa0',
+    imageUrl: 'https://img.youtube.com/vi/OCBmfNhSfa0/maxresdefault.jpg',
+    gcal: { titulo: 'SDW #45 — Aula 2', inicio: '20261007T230000Z', fim: '20261008T010000Z', desc: 'Aula 2 da Semana do Despertar #45 · IDM' },
   },
   {
     id: 3,
     titulo: 'Aula 3 — A Revelação',
-    data: '20/08 · Quinta-feira',
+    data: '08/10 · Quinta-feira',
     horario: '20h (Horário de Brasília)',
-    youtubeUrl: 'https://youtube.com/live/PENDENTE_AULA_3',
-    imageUrl: 'https://img.youtube.com/vi/PENDENTE_AULA_3/maxresdefault.jpg',
-    gcal: { titulo: 'SDW #45 — Aula 3', inicio: '20260820T230000Z', fim: '20260821T010000Z', desc: 'Aula 3 da Semana do Despertar #45 · IDM' },
+    youtubeUrl: 'https://youtube.com/live/3ZaWp0xnm9w',
+    imageUrl: 'https://img.youtube.com/vi/3ZaWp0xnm9w/maxresdefault.jpg',
+    gcal: { titulo: 'SDW #45 — Aula 3', inicio: '20261008T230000Z', fim: '20261009T010000Z', desc: 'Aula 3 da Semana do Despertar #45 · IDM' },
   },
 ]
 
@@ -70,8 +70,8 @@ const XP_PER_STEP = 200
 const TOTAL_STEPS  = 3
 const STORAGE_KEY  = 'sdw45_progress'
 
-// 22h Horário de Brasília em 20/08/2026 (última aula) = 01h UTC do dia 21/08/2026
-const CERT_UNLOCK = new Date('2026-08-21T01:00:00Z')
+// 22h Horário de Brasília em 08/10/2026 (última aula) = 01h UTC do dia 09/10/2026
+const CERT_UNLOCK = new Date('2026-10-09T01:00:00Z')
 
 // ─────────────────────────────────────────────
 // TYPES
@@ -446,7 +446,7 @@ export function SemanaDespertar45({ firstName }: { firstName: string }) {
             {/* Copy */}
             <p className="text-sm text-white/60 leading-relaxed mb-7">
               Você garantiu sua vaga no <span className="text-white/80 font-semibold">Curso Gratuito!</span> O evento será nos dias{' '}
-              <span className="text-white/80 font-semibold">18, 19 e 20 de Agosto.</span>
+              <span className="text-white/80 font-semibold">06, 07 e 08 de Outubro.</span>
               <br />
               Siga as etapas abaixo para garantir seu acesso completo.
             </p>
@@ -641,7 +641,7 @@ export function SemanaDespertar45({ firstName }: { firstName: string }) {
                   subtitle={
                     certUnlocked
                       ? (todasAulasFeitas ? 'Disponível para resgate!' : 'Complete as 3 aulas para resgatar.')
-                      : 'Libera às 22h · 20/08 · após a última aula'
+                      : 'Libera às 22h · 08/10 · após a última aula'
                   }
                 >
                   <div className="space-y-4">
@@ -684,7 +684,7 @@ export function SemanaDespertar45({ firstName }: { firstName: string }) {
                           </div>
                         </div>
                         <p className="text-[11px] text-white/25 leading-relaxed">
-                          📅 20/08 às 22h (Horário de Brasília) — ao final da 3ª aula ao vivo
+                          📅 08/10 às 22h (Horário de Brasília) — ao final da 3ª aula ao vivo
                         </p>
                       </div>
                     ) : todasAulasFeitas ? (
