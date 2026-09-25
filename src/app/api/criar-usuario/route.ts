@@ -15,8 +15,12 @@ function buildLoginUrl(email: string, nome: string, secret: string, route?: stri
 export async function POST(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
   const expectedKey = process.env.CRIAR_USUARIO_API_KEY
+  // A chave já foi salva na Vercel com BOM (U+FEFF) / espaço na frente; um header HTTP não
+  // consegue carregar esse caractere, então compara sem eles. O HMAC do auto-login continua
+  // usando o valor cru (expectedKey), igual ao que a rota auto-login lê do ambiente.
+  const expectedKeyClean = expectedKey?.replace(/[﻿​-‍]/g, '').trim()
 
-  if (!expectedKey || authHeader !== `Bearer ${expectedKey}`) {
+  if (!expectedKey || authHeader?.trim() !== `Bearer ${expectedKeyClean}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
