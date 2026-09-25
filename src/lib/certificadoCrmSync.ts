@@ -38,66 +38,71 @@ export async function sincronizarCertificadoNoCrm(params: {
 
   const sistema11 = createSistema11Client()
 
-  // 1. Lançamento ativo agora
-  const { data: lancamento, error: lancamentoError } = await sistema11
+  // 1. TODOS os lançamentos ativos (pode haver mais de um ao mesmo tempo:
+  // ex. a turma atual ainda gerando certificados + a próxima já aberta).
+  const { data: lancamentos, error: lancamentoError } = await sistema11
     .from('lancamentos')
     .select('id, nome')
     .eq('status', 'em_andamento')
     .eq('ativo', true)
     .order('data_live', { ascending: false })
-    .limit(1)
-    .maybeSingle()
 
-  if (lancamentoError || !lancamento) {
+  if (lancamentoError || !lancamentos?.length) {
     console.warn('[certificado-crm-sync] nenhum lançamento ativo encontrado:', lancamentoError?.message)
     return
   }
 
-  // 2. Achar o lead desse lançamento por e-mail OU telefone
-  const { data: leads, error: leadsError } = await sistema11
-    .from('lancamento_leads')
-    .select('id, fase, observacoes, email, whatsapp, certificado_gerado')
-    .eq('lancamento_id', lancamento.id)
+  let encontrouAlgum = false
 
-  if (leadsError || !leads) {
-    console.warn('[certificado-crm-sync] erro ao buscar leads do lançamento:', leadsError?.message)
-    return
-  }
+  for (const lancamento of lancamentos) {
+    // 2. Achar o lead desse lançamento por e-mail OU telefone
+    const { data: leads, error: leadsError } = await sistema11
+      .from('lancamento_leads')
+      .select('id, fase, observacoes, email, whatsapp, certificado_gerado')
+      .eq('lancamento_id', lancamento.id)
 
-  const lead = leads.find(l => {
-    const leadEmail = (l.email ?? '').trim().toLowerCase()
-    const leadTelefone = apenasDigitosLocais(l.whatsapp ?? '')
-    return (emailNorm && leadEmail === emailNorm) || (telefoneNorm && leadTelefone === telefoneNorm)
-  })
+    if (leadsError || !leads) {
+      console.warn(`[certificado-crm-sync] erro ao buscar leads de "${lancamento.nome}":`, leadsError?.message)
+      continue
+    }
 
-  if (!lead) {
-    console.warn(`[certificado-crm-sync] nenhum lead encontrado em "${lancamento.nome}" pra ${emailNorm || telefoneNorm}`)
-    return
-  }
-
-  // Já marcado — nada a fazer
-  if (lead.certificado_gerado) return
-
-  // 3. Guardar a fase anterior como anotação, e marcar a flag (o trigger
-  // do CRM cuida de mover o card com base nela)
-  const { data: faseAnterior } = lead.fase
-    ? await sistema11.from('kanban_colunas').select('nome').eq('id', lead.fase).maybeSingle()
-    : { data: null }
-
-  const timestamp = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })
-  const notaFaseAnterior = faseAnterior?.nome ?? 'sem fase definida'
-  const novaObservacao = `[${timestamp}] Certificado gerado via idmpsi.com.br/certificado — estava em "${notaFaseAnterior}".`
-  const observacoesAtualizadas = lead.observacoes ? `${lead.observacoes}\n${novaObservacao}` : novaObservacao
-
-  const { error: updateError } = await sistema11
-    .from('lancamento_leads')
-    .update({
-      certificado_gerado: true,
-      observacoes: observacoesAtualizadas,
+    const lead = leads.find(l => {
+      const leadEmail = (l.email ?? '').trim().toLowerCase()
+      const leadTelefone = apenasDigitosLocais(l.whatsapp ?? '')
+      return (emailNorm && leadEmail === emailNorm) || (telefoneNorm && leadTelefone === telefoneNorm)
     })
-    .eq('id', lead.id)
 
-  if (updateError) {
-    console.error('[certificado-crm-sync] erro ao marcar certificado_gerado:', updateError.message)
+    if (!lead) continue
+    encontrouAlgum = true
+
+    // Já marcado — nada a fazer nesse lançamento
+    if (lead.certificado_gerado) continue
+
+    // 3. Guardar a fase anterior como anotação, e marcar a flag (o trigger
+    // do CRM cuida de mover o card com base nela, se o board tiver a coluna)
+    const { data: faseAnterior } = lead.fase
+      ? await sistema11.from('kanban_colunas').select('nome').eq('id', lead.fase).maybeSingle()
+      : { data: null }
+
+    const timestamp = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })
+    const notaFaseAnterior = faseAnterior?.nome ?? 'sem fase definida'
+    const novaObservacao = `[${timestamp}] Certificado gerado via idmpsi.com.br/certificado — estava em "${notaFaseAnterior}".`
+    const observacoesAtualizadas = lead.observacoes ? `${lead.observacoes}\n${novaObservacao}` : novaObservacao
+
+    const { error: updateError } = await sistema11
+      .from('lancamento_leads')
+      .update({
+        certificado_gerado: true,
+        observacoes: observacoesAtualizadas,
+      })
+      .eq('id', lead.id)
+
+    if (updateError) {
+      console.error(`[certificado-crm-sync] erro ao marcar certificado_gerado em "${lancamento.nome}":`, updateError.message)
+    }
+  }
+
+  if (!encontrouAlgum) {
+    console.warn(`[certificado-crm-sync] nenhum lead encontrado nos lançamentos ativos pra ${emailNorm || telefoneNorm}`)
   }
 }
