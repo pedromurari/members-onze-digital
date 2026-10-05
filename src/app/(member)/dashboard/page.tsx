@@ -107,11 +107,7 @@ export default async function DashboardPage() {
           enrolled: true,
           progress: progressMap[e.product_id],
         })),
-        ...(featuredProduct && !enrolledIds.includes(featuredProduct.id) ? [{
-          kind: 'product' as const,
-          product: featuredProduct,
-          enrolled: false,
-        }] : []),
+        // Produto em destaque que o aluno não tem não vira slide (levaria à compra, que ainda não existe).
         ...(inProgress.length === 0 ? notStarted.slice(0, 2).map(e => ({
           kind: 'product' as const,
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -208,11 +204,11 @@ export default async function DashboardPage() {
         {upsellProducts.length > 0 && (
           <>
             <div className="py-6">
+              {/* Sem página de venda por enquanto: aparecem na vitrine, mas bloqueados e sem link. */}
               <CourseCarousel
                 title="Expanda sua jornada"
-                subtitle="Cursos e mentorias para o próximo nível"
-                items={upsellProducts.map(p => ({ product: p }))}
-                showAllHref="/loja"
+                subtitle="Em breve disponíveis para você"
+                items={upsellProducts.map(p => ({ product: p, locked: true }))}
               />
             </div>
             <SectionDivider />
@@ -256,20 +252,9 @@ export default async function DashboardPage() {
             <div className="space-y-2">
               <p className="text-white font-semibold text-xl">Comece sua jornada</p>
               <p className="text-white/50 text-sm max-w-xs mx-auto">
-                Explore nossa biblioteca de cursos e encontre o próximo passo na sua transformação.
+                Seus cursos aparecem aqui assim que o acesso for liberado.
               </p>
             </div>
-            <a
-              href="/loja"
-              className="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-sm font-bold transition-all hover:opacity-90 hover:-translate-y-0.5 active:scale-[0.97]"
-              style={{
-                background: 'linear-gradient(135deg, #FFB800, #FFC933)',
-                color: '#0D1638',
-                boxShadow: '0 8px 28px rgba(255,184,0,0.25)',
-              }}
-            >
-              Explorar cursos
-            </a>
           </div>
         )}
       </div>

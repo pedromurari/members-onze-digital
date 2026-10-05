@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Play, CheckCircle2, Clock } from 'lucide-react'
+import { Play, CheckCircle2, Clock, Lock } from 'lucide-react'
 import type { Product, CourseProgress } from '@/types'
 
 const TYPE_LABEL: Record<string, string> = {
@@ -16,9 +16,29 @@ interface CourseCardNetflixProps {
   progress?: CourseProgress
   href: string
   priority?: boolean
+  // Produto que o aluno ainda não tem: aparece na vitrine, mas sem clique (ainda não há página de venda).
+  locked?: boolean
 }
 
-export function CourseCardNetflix({ product, progress, href, priority = false }: CourseCardNetflixProps) {
+function CardShell({ locked, href, children }: { locked: boolean; href: string; children: React.ReactNode }) {
+  if (locked) {
+    return (
+      <div className="block group rounded-xl cursor-not-allowed select-none" aria-disabled="true" title="Em breve disponível">
+        {children}
+      </div>
+    )
+  }
+  return (
+    <Link
+      href={href}
+      className="block group focus-visible:outline-2 focus-visible:outline-[#FFB800] focus-visible:outline-offset-2 rounded-xl"
+    >
+      {children}
+    </Link>
+  )
+}
+
+export function CourseCardNetflix({ product, progress, href, priority = false, locked = false }: CourseCardNetflixProps) {
   const percent    = progress?.percent_complete ?? 0
   const completed  = progress?.completed_lessons ?? 0
   const total      = progress?.total_lessons ?? 0
@@ -27,10 +47,7 @@ export function CourseCardNetflix({ product, progress, href, priority = false }:
   const notStarted = percent === 0
 
   return (
-    <Link
-      href={href}
-      className="block group focus-visible:outline-2 focus-visible:outline-[#FFB800] focus-visible:outline-offset-2 rounded-xl"
-    >
+    <CardShell locked={locked} href={href}>
       {/* Thumbnail */}
       <div className="relative overflow-hidden rounded-xl bg-[#0A1232]" style={{ aspectRatio: '2/3' }}>
         {product.thumbnail_url ? (
@@ -69,13 +86,21 @@ export function CourseCardNetflix({ product, progress, href, priority = false }:
           </span>
         )}
 
-        {/* Play button — hover */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="h-12 w-12 rounded-full flex items-center justify-center shadow-2xl"
-            style={{ background: 'linear-gradient(135deg, #FFB800, #FFC933)' }}>
-            <Play className="h-5 w-5 text-[#0D1638] fill-[#0D1638] ml-0.5" />
+        {locked ? (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-[#0D1638]/65 backdrop-grayscale">
+            <div className="h-11 w-11 rounded-full flex items-center justify-center border border-white/15 bg-black/40">
+              <Lock className="h-5 w-5 text-white/70" />
+            </div>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-white/70">Em breve</span>
           </div>
-        </div>
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="h-12 w-12 rounded-full flex items-center justify-center shadow-2xl"
+              style={{ background: 'linear-gradient(135deg, #FFB800, #FFC933)' }}>
+              <Play className="h-5 w-5 text-[#0D1638] fill-[#0D1638] ml-0.5" />
+            </div>
+          </div>
+        )}
 
         {/* Progress bar */}
         {(inProgress || isDone) && (
@@ -93,7 +118,7 @@ export function CourseCardNetflix({ product, progress, href, priority = false }:
 
       {/* Texto */}
       <div className="mt-2.5 space-y-1 px-0.5">
-        <h3 className="text-white font-semibold text-sm leading-snug line-clamp-2 group-hover:text-[#FFB800] transition-colors duration-200">
+        <h3 className={`font-semibold text-sm leading-snug line-clamp-2 transition-colors duration-200 ${locked ? 'text-white/45' : 'text-white group-hover:text-[#FFB800]'}`}>
           {product.title}
         </h3>
         <div className="flex items-center gap-1.5 text-white/30 text-xs">
@@ -118,6 +143,6 @@ export function CourseCardNetflix({ product, progress, href, priority = false }:
           )}
         </div>
       </div>
-    </Link>
+    </CardShell>
   )
 }

@@ -5,11 +5,13 @@ import Link from 'next/link'
 import useEmblaCarousel from 'embla-carousel-react'
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
 import { CourseCardNetflix } from './CourseCardNetflix'
+import { productHref } from '@/lib/product-href'
 import type { Product, CourseProgress } from '@/types'
 
 interface CarouselItem {
   product: Product
   progress?: CourseProgress
+  locked?: boolean
 }
 
 interface CourseCarouselProps {
@@ -116,7 +118,7 @@ export function CourseCarousel({ title, subtitle, items, showAllHref, emptyMessa
         {/* Embla viewport */}
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex gap-3 sm:gap-4 px-4 sm:px-6 lg:px-10">
-            {items.map(({ product, progress }, i) => (
+            {items.map(({ product, progress, locked }, i) => (
               <div
                 key={product.id}
                 className="flex-none w-[150px] sm:w-[180px] md:w-[200px] lg:w-[220px]"
@@ -124,7 +126,8 @@ export function CourseCarousel({ title, subtitle, items, showAllHref, emptyMessa
                 <CourseCardNetflix
                   product={product}
                   progress={progress}
-                  href={`/cursos/${product.slug}`}
+                  href={productHref(product.slug)}
+                  locked={locked}
                   priority={i < 4}
                 />
               </div>

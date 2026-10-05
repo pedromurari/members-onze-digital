@@ -2,9 +2,6 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function updateSession(request: NextRequest) {
-  // Os layouts (server components) não enxergam a URL — passa o caminho num header
-  // pra eles decidirem, por exemplo, o bloqueio da turma NPS.
-  request.headers.set('x-pathname', request.nextUrl.pathname)
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(

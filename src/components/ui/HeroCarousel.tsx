@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Play, Info, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react'
 import { BuyButton } from '@/components/marketing/BuyButton'
+import { productHref } from '@/lib/product-href'
 import type { Product, CourseProgress } from '@/types'
 import type { BannerSlide } from '@/lib/actions/banners'
 
@@ -282,7 +283,7 @@ function ProductContent({ slide }: { slide: ProductHeroSlide }) {
       <div className="flex flex-wrap items-center gap-3 pt-1">
         {enrolled ? (
           <Link
-            href={lastLessonHref ?? `/cursos/${product.slug}`}
+            href={lastLessonHref ?? productHref(product.slug)}
             className="inline-flex items-center gap-2 rounded-2xl px-6 py-3.5 text-sm font-bold transition-all hover:scale-[1.03] active:scale-[0.98]"
             style={{ background: 'linear-gradient(135deg, #FFB800, #FFC933)', color: '#0D1638', boxShadow: '0 8px 28px rgba(255,184,0,0.35)' }}
           >
