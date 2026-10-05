@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getCachedUser, getCachedProfile } from '@/lib/supabase/cached-user'
 import { TopNavbar } from '@/components/layout/TopNavbar'
 import { MobileTabBar } from '@/components/layout/MobileTabBar'
+import { NpsOnlyGuard } from '@/components/layout/NpsOnlyGuard'
 import { isEnrolledInFormacao } from '@/lib/formacao-queries'
 import type { Profile } from '@/types'
 
@@ -101,7 +102,9 @@ export default async function MemberLayout({ children }: { children: React.React
         </div>
       )}
       <main className="pb-20 md:pb-8">
-        {conteudo}
+        <NpsOnlyGuard enabled={npsOnly} fallback={<EmManutencao />}>
+          {conteudo}
+        </NpsOnlyGuard>
       </main>
       <MobileTabBar hasNpaAccess={hasNpaAccess} hasNpsAccess={hasNpsAccess} npsOnly={npsOnly} />
     </div>

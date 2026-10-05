@@ -77,7 +77,7 @@ export function TopNavbar({ profile, hasNpaAccess = false, hasNpsAccess = false,
         <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 flex items-center gap-6">
 
           {/* Logo */}
-          <Link href="/lancamento" className="flex-shrink-0">
+          <Link href={npsOnly ? '/mentoria-nps' : '/dashboard'} className="flex-shrink-0">
             <IdmWordmark size="sm" variant="white" />
           </Link>
 
