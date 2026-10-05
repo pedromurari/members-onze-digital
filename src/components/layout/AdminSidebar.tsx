@@ -12,6 +12,7 @@ const adminNavItems = [
   { href: '/admin/cursos',       label: 'Cursos',      icon: BookOpen },
   { href: '/admin/formacao',     label: 'Formação',    icon: GraduationCap },
   { href: '/admin/mentoria-npa/calendario', label: 'Mentoria NPA', icon: CalendarClock },
+  { href: '/admin/mentoria-nps/calendario', label: 'Mentoria NPS', icon: CalendarClock },
   { href: '/admin/loja',         label: 'Loja',        icon: ShoppingBag },
   { href: '/admin/banners',      label: 'Banners',     icon: Image },
   { href: '/admin/ao-vivo',      label: 'Ao Vivo',     icon: Radio },

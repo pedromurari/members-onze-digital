@@ -37,13 +37,16 @@ async function getData(slug: string, userId: string) {
 
   const [{ data: profileRaw }, { data: enrollmentRaw }, { data: modulesRaw }, { data: tasksRaw }, { data: materialsRaw }] = await Promise.all([
     sb.from('profiles').select('role').eq('id', user.id).single(),
-    sb.from('enrollments').select('id').eq('user_id', user.id).eq('is_active', true),
+    sb.from('enrollments').select('id, expires_at').eq('user_id', user.id).eq('product_id', product.id).eq('is_active', true),
     sb.from('modules').select('*, lessons (*)').eq('product_id', product.id).order('sort_order'),
     sb.from('tasks').select('*').eq('product_id', product.id).order('sort_order'),
     sb.from('materials').select('*').eq('product_id', product.id).order('sort_order'),
   ])
   const isAdmin = profileRaw?.role === 'admin'
-  const isEnrolled = isAdmin || !!(enrollmentRaw?.length)
+  const isEnrolled =
+    isAdmin ||
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    !!(enrollmentRaw ?? []).some((e: any) => !e.expires_at || new Date(e.expires_at).getTime() > Date.now())
   const modules = (modulesRaw ?? []) as ModuleWithLessons[]
   const allLessonIds = modules.flatMap(m => m.lessons.map(l => l.id))
   const { data: progressRaw } = await sb.from('progress').select('*').eq('user_id', user.id).in('lesson_id', allLessonIds)

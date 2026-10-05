@@ -16,7 +16,13 @@ const STATUS_CONFIG = {
 
 interface ModalState { open: boolean; live: Live | null }
 
-export function MentoriaNpaLivesClient({ initialLives }: { initialLives: Live[] }) {
+interface LivesClientProps {
+  initialLives: Live[]
+  productId?: string
+  nomeProduto?: string
+}
+
+export function MentoriaNpaLivesClient({ initialLives, productId = MENTORIA_NPA_PRODUCT_ID, nomeProduto = 'Mentoria NPA' }: LivesClientProps) {
   const [lives, setLives] = useState(initialLives)
   const [modal, setModal] = useState<ModalState>({ open: false, live: null })
   const [deleting, setDeleting] = useState<string | null>(null)
@@ -47,8 +53,8 @@ export function MentoriaNpaLivesClient({ initialLives }: { initialLives: Live[] 
 
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-[#f0f0f0]">Mentoria NPA — Encontros ao vivo</h1>
-          <p className="text-sm text-[#606060] mt-0.5">Link do Meet + data/horário exibidos no calendário da Mentoria NPA.</p>
+          <h1 className="text-xl font-bold text-[#f0f0f0]">{nomeProduto} — Encontros ao vivo</h1>
+          <p className="text-sm text-[#606060] mt-0.5">Link do Meet + data/horário exibidos no calendário da {nomeProduto}.</p>
         </div>
         <button onClick={openCreate}
           className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold text-[#0a0a0a] bg-[#c79a3b] hover:bg-[#e8b84b] transition-colors">
@@ -107,6 +113,8 @@ export function MentoriaNpaLivesClient({ initialLives }: { initialLives: Live[] 
       {modal.open && (
         <LiveModal
           live={modal.live}
+          productId={productId}
+          nomeProduto={nomeProduto}
           onClose={closeModal}
           onSaved={(saved) => {
             if (modal.live) setLives((ls) => ls.map((l) => l.id === saved.id ? saved : l))
@@ -119,15 +127,15 @@ export function MentoriaNpaLivesClient({ initialLives }: { initialLives: Live[] 
   )
 }
 
-function LiveModal({ live, onClose, onSaved }: { live: Live | null; onClose: () => void; onSaved: (live: Live) => void }) {
+function LiveModal({ live, productId, nomeProduto, onClose, onSaved }: { live: Live | null; productId: string; nomeProduto: string; onClose: () => void; onSaved: (live: Live) => void }) {
   const [loading, setLoading] = useState(false)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true)
     const fd = new FormData(e.currentTarget)
-    fd.set('audience', 'Alunos da Mentoria NPA')
-    fd.set('product_id', MENTORIA_NPA_PRODUCT_ID)
+    fd.set('audience', `Alunos da ${nomeProduto}`)
+    fd.set('product_id', productId)
     if (live) {
       await updateLive(live.id, fd)
       onSaved({

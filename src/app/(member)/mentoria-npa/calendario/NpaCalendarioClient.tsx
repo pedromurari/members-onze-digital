@@ -6,18 +6,20 @@ import type { Live } from '@/lib/actions/lives'
 
 interface Props {
   lives: Live[]
+  nomeProduto?: string
+  voltarHref?: string
 }
 
-export function NpaCalendarioClient({ lives }: Props) {
+export function NpaCalendarioClient({ lives, nomeProduto = 'Mentoria NPA', voltarHref = '/mentoria-npa' }: Props) {
   return (
     <div className="min-h-screen bg-[#0D1638] px-4 sm:px-6 lg:px-10 py-6">
       <div className="max-w-[820px] mx-auto">
-        <Link href="/mentoria-npa" className="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-white transition-colors mb-4">
-          <ArrowLeft className="w-4 h-4" /> Mentoria NPA
+        <Link href={voltarHref} className="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-white transition-colors mb-4">
+          <ArrowLeft className="w-4 h-4" /> {nomeProduto}
         </Link>
 
         <h1 className="text-xl font-bold text-white mb-6" style={{ fontFamily: 'var(--font-fraunces, Georgia, serif)' }}>
-          Calendário da Mentoria NPA
+          Calendário da {nomeProduto}
         </h1>
 
         <section>
@@ -28,7 +30,7 @@ export function NpaCalendarioClient({ lives }: Props) {
           {lives.length === 0 ? (
             <div className="rounded-xl border border-dashed border-white/[0.08] p-6 text-center">
               <Radio className="w-6 h-6 text-white/20 mx-auto mb-2" />
-              <p className="text-sm text-white/40">A equipe está organizando o cronograma de encontros da Mentoria NPA.</p>
+              <p className="text-sm text-white/40">A equipe está organizando o cronograma de encontros da {nomeProduto}.</p>
             </div>
           ) : (
             <div className="space-y-2">

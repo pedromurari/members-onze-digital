@@ -28,10 +28,11 @@ const BASE_LINKS: NavLink[] = [
 interface TopNavbarProps {
   profile: Profile
   hasNpaAccess?: boolean
+  hasNpsAccess?: boolean
   formacaoEnrolled?: boolean
 }
 
-export function TopNavbar({ profile, hasNpaAccess = false, formacaoEnrolled = false }: TopNavbarProps) {
+export function TopNavbar({ profile, hasNpaAccess = false, hasNpsAccess = false, formacaoEnrolled = false }: TopNavbarProps) {
   const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -43,6 +44,7 @@ export function TopNavbar({ profile, hasNpaAccess = false, formacaoEnrolled = fa
     BASE_LINKS[0],
     ...(formacaoEnrolled ? [{ href: '/formacao', label: 'Formação', icon: GraduationCap, highlight: true }] : []),
     ...(hasNpaAccess ? [{ href: '/mentoria-npa', label: 'Mentoria NPA', icon: Sparkles, highlight: false, badge: 'NOVO' }] : []),
+    ...(hasNpsAccess ? [{ href: '/mentoria-nps', label: 'Mentoria NPS', icon: Sparkles, highlight: false }] : []),
     BASE_LINKS[1],
   ]
 

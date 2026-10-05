@@ -27,16 +27,28 @@ export default async function MemberLayout({ children }: { children: React.React
     .eq('is_active', true)
     .in('products.slug', ['mentoria-npa', 'ebook-telas-npa'])
 
+  // Mentoria NPS: só conta matrícula ativa E dentro da validade (assinatura mensal).
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: npsEnrollments } = await (supabase.from('enrollments') as any)
+    .select('id, expires_at, products!inner(slug)')
+    .eq('user_id', user.id)
+    .eq('is_active', true)
+    .eq('products.slug', 'mentoria-nps')
+
   const hasNpaAccess = isAdmin || (npaEnrollments ?? []).length > 0
+  const hasNpsAccess =
+    isAdmin ||
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (npsEnrollments ?? []).some((e: any) => !e.expires_at || new Date(e.expires_at).getTime() > Date.now())
   const formacaoEnrolled = isAdmin || (await isEnrolledInFormacao())
 
   return (
     <div className="min-h-screen bg-[#0D1638]">
-      <TopNavbar profile={profile as Profile} hasNpaAccess={hasNpaAccess} formacaoEnrolled={formacaoEnrolled} />
+      <TopNavbar profile={profile as Profile} hasNpaAccess={hasNpaAccess} hasNpsAccess={hasNpsAccess} formacaoEnrolled={formacaoEnrolled} />
       <main className="pb-20 md:pb-8">
         {children}
       </main>
-      <MobileTabBar hasNpaAccess={hasNpaAccess} />
+      <MobileTabBar hasNpaAccess={hasNpaAccess} hasNpsAccess={hasNpsAccess} />
     </div>
   )
 }
