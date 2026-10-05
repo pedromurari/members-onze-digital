@@ -30,9 +30,10 @@ interface TopNavbarProps {
   hasNpaAccess?: boolean
   hasNpsAccess?: boolean
   formacaoEnrolled?: boolean
+  npsOnly?: boolean
 }
 
-export function TopNavbar({ profile, hasNpaAccess = false, hasNpsAccess = false, formacaoEnrolled = false }: TopNavbarProps) {
+export function TopNavbar({ profile, hasNpaAccess = false, hasNpsAccess = false, formacaoEnrolled = false, npsOnly = false }: TopNavbarProps) {
   const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -40,7 +41,9 @@ export function TopNavbar({ profile, hasNpaAccess = false, hasNpsAccess = false,
   // Quem tem acesso à Formação/Mentoria vê essas abas em destaque logo após o Início —
   // são a área principal dela(s). O link da Formação só existe pra quem está matriculado,
   // e aponta pra trilha dedicada (/formacao), não pro visualizador genérico de cursos.
-  const links: NavLink[] = [
+  const links: NavLink[] = npsOnly
+    ? [{ href: '/mentoria-nps', label: 'Mentoria NPS', icon: Sparkles, highlight: true }]
+    : [
     BASE_LINKS[0],
     ...(formacaoEnrolled ? [{ href: '/formacao', label: 'Formação', icon: GraduationCap, highlight: true }] : []),
     ...(hasNpaAccess ? [{ href: '/mentoria-npa', label: 'Mentoria NPA', icon: Sparkles, highlight: false, badge: 'NOVO' }] : []),
