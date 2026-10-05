@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
       const { data: profile } = await (supabase.from('profiles') as any)
         .select('role').eq('id', data.user.id).single()
 
-      const destination = profile?.role === 'admin' ? '/admin' : next
+      const destination = next === '/reset-password' ? next : profile?.role === 'admin' ? '/admin' : next
       return NextResponse.redirect(`${origin}${destination}`)
     }
   }
