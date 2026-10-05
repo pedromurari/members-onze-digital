@@ -80,7 +80,7 @@ export function TopNavbar({ profile, hasNpaAccess = false, hasNpsAccess = false,
 
           {/* Nav links — desktop */}
           <nav className="hidden md:flex items-center gap-1 flex-1">
-            {links.map(({ href, label, highlight, badge }) => (
+            {links.map(({ href, label, badge }) => (
               <Link
                 key={href}
                 href={href}
@@ -88,8 +88,6 @@ export function TopNavbar({ profile, hasNpaAccess = false, hasNpsAccess = false,
                   'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors duration-150',
                   isActive(href)
                     ? 'text-[#FFB800] bg-[rgba(255,184,0,0.12)]'
-                    : highlight
-                    ? 'text-[#FFB800] hover:bg-[rgba(255,184,0,0.08)]'
                     : 'text-white/50 hover:text-white hover:bg-white/[0.07]'
                 )}
               >
