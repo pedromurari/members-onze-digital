@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { Layers, ShieldCheck, Calendar, PlayCircle, ArrowRight } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { MapaEsferasCard, VoltarButton } from '../mentoria-npa/HubCards'
+import { FinanceiroCard, FinanceiroTitulo } from '@/components/marketing/FinanceiroCard'
+import { getFinanceiroNps } from '@/lib/financeiro-nps'
 
 export const metadata = { title: 'Mentoria NPS — Instituto Despertamente' }
 
@@ -64,6 +66,9 @@ export default async function MentoriaNpsPage() {
 
   const firstName = (profile?.full_name ?? '').split(' ')[0] || 'Bem-vindo'
 
+  // Mensalidade vinda do financeiro; sem cobrança (ou integração ainda não ligada) fica em stand-by.
+  const financeiro = user.email ? await getFinanceiroNps(user.email) : null
+
   return (
     <div className="relative max-w-2xl mx-auto px-4 sm:px-6 lg:px-10 pt-6 pb-24 md:pb-16 space-y-10">
       <VoltarButton />
@@ -105,6 +110,11 @@ export default async function MentoriaNpsPage() {
           <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-white/45">Plataformas</span>
         </div>
         <MapaEsferasCard />
+      </div>
+
+      <div className="space-y-3">
+        <FinanceiroTitulo />
+        <FinanceiroCard dados={financeiro} acessoAte={validadeFmt} />
       </div>
     </div>
   )
