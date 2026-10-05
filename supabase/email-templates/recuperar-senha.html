@@ -27,12 +27,12 @@
             <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:28px 0 24px 0;">
               <tr>
                 <td align="center" bgcolor="#FFB800" style="background-color:#FFB800;border-radius:12px;">
-                  <a href="{{ .ConfirmationURL }}" target="_blank" style="display:inline-block;padding:16px 34px;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;color:#0D1638;text-decoration:none;border-radius:12px;">Criar nova senha</a>
+                  <a href="{{ .SiteURL }}/api/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/reset-password" target="_blank" style="display:inline-block;padding:16px 34px;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;color:#0D1638;text-decoration:none;border-radius:12px;">Criar nova senha</a>
                 </td>
               </tr>
             </table>
             <p style="margin:0 0 8px 0;font-size:13px;line-height:20px;color:#6b7280;">Se o botão não funcionar, copie e cole este link no navegador:</p>
-            <p style="margin:0 0 24px 0;font-size:12px;line-height:18px;color:#6b7280;word-break:break-all;"><a href="{{ .ConfirmationURL }}" style="color:#6b7280;">{{ .ConfirmationURL }}</a></p>
+            <p style="margin:0 0 24px 0;font-size:12px;line-height:18px;color:#6b7280;word-break:break-all;"><a href="{{ .SiteURL }}/api/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/reset-password" style="color:#6b7280;">{{ .SiteURL }}/api/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/reset-password</a></p>
             <div style="border-top:1px solid #e3d9c6;padding-top:18px;font-size:13px;line-height:20px;color:#6b7280;">Não foi você que pediu? Pode ignorar este e-mail com tranquilidade — sua senha atual continua a mesma e nada será alterado.</div>
           </td>
         </tr>
