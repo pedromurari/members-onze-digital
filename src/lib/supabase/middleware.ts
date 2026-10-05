@@ -34,7 +34,8 @@ export async function updateSession(request: NextRequest) {
     pathname.startsWith('/ao-vivo') ||
     pathname.startsWith('/aula') ||
     pathname.startsWith('/formacao') ||
-    pathname.startsWith('/mentoria-npa')
+    pathname.startsWith('/mentoria-npa') ||
+    pathname.startsWith('/mentoria-nps')
 
   const isAdminRoute = pathname.startsWith('/admin')
   const isProtected = isMemberRoute || isAdminRoute
@@ -47,7 +48,8 @@ export async function updateSession(request: NextRequest) {
   }
 
   // Autenticado em rota de auth → dashboard (admin acessa /admin pelo menu quando quiser)
-  if (user && isAuthRoute) {
+  // /reset-password precisa abrir logado: o link do e-mail de recuperação já cria a sessão.
+  if (user && isAuthRoute && !pathname.startsWith('/reset-password')) {
     const url = request.nextUrl.clone()
     url.pathname = '/dashboard'
     return NextResponse.redirect(url)
