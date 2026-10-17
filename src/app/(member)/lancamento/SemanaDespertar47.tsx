@@ -40,29 +40,29 @@ const AULAS: Aula[] = [
   {
     id: 1,
     titulo: 'Aula 1 — O Despertar',
-    data: '01/09 · Terça-feira',
+    data: '27/10 · Terça-feira',
     horario: '20h (Horário de Brasília)',
-    youtubeUrl: 'https://youtube.com/live/PENDENTE_AULA_1',
-    imageUrl: 'https://img.youtube.com/vi/PENDENTE_AULA_1/maxresdefault.jpg',
-    gcal: { titulo: 'SDW #47 — Aula 1', inicio: '20260901T230000Z', fim: '20260902T010000Z', desc: 'Aula 1 da Semana do Despertar #47 · IDM' },
+    youtubeUrl: 'https://youtube.com/live/GlwwOCnYb2g',
+    imageUrl: 'https://img.youtube.com/vi/GlwwOCnYb2g/maxresdefault.jpg',
+    gcal: { titulo: 'SDW #47 — Aula 1', inicio: '20261027T230000Z', fim: '20261028T010000Z', desc: 'Aula 1 da Semana do Despertar #47 · IDM' },
   },
   {
     id: 2,
     titulo: 'Aula 2 — A Cura',
-    data: '02/09 · Quarta-feira',
+    data: '28/10 · Quarta-feira',
     horario: '20h (Horário de Brasília)',
-    youtubeUrl: 'https://youtube.com/live/PENDENTE_AULA_2',
-    imageUrl: 'https://img.youtube.com/vi/PENDENTE_AULA_2/maxresdefault.jpg',
-    gcal: { titulo: 'SDW #47 — Aula 2', inicio: '20260902T230000Z', fim: '20260903T010000Z', desc: 'Aula 2 da Semana do Despertar #47 · IDM' },
+    youtubeUrl: 'https://youtube.com/live/9XI7J0bEg-o',
+    imageUrl: 'https://img.youtube.com/vi/9XI7J0bEg-o/maxresdefault.jpg',
+    gcal: { titulo: 'SDW #47 — Aula 2', inicio: '20261028T230000Z', fim: '20261029T010000Z', desc: 'Aula 2 da Semana do Despertar #47 · IDM' },
   },
   {
     id: 3,
     titulo: 'Aula 3 — A Revelação',
-    data: '03/09 · Quinta-feira',
+    data: '29/10 · Quinta-feira',
     horario: '20h (Horário de Brasília)',
-    youtubeUrl: 'https://youtube.com/live/PENDENTE_AULA_3',
-    imageUrl: 'https://img.youtube.com/vi/PENDENTE_AULA_3/maxresdefault.jpg',
-    gcal: { titulo: 'SDW #47 — Aula 3', inicio: '20260903T230000Z', fim: '20260904T010000Z', desc: 'Aula 3 da Semana do Despertar #47 · IDM' },
+    youtubeUrl: 'https://youtube.com/live/JeSYlKYx9P4',
+    imageUrl: 'https://img.youtube.com/vi/JeSYlKYx9P4/maxresdefault.jpg',
+    gcal: { titulo: 'SDW #47 — Aula 3', inicio: '20261029T230000Z', fim: '20261030T010000Z', desc: 'Aula 3 da Semana do Despertar #47 · IDM' },
   },
 ]
 
@@ -70,8 +70,8 @@ const XP_PER_STEP = 200
 const TOTAL_STEPS  = 3
 const STORAGE_KEY  = 'sdw47_progress'
 
-// 22h Horário de Brasília em 03/09/2026 (última aula) = 01h UTC do dia 04/09/2026
-const CERT_UNLOCK = new Date('2026-09-04T01:00:00Z')
+// 22h Horário de Brasília em 29/10/2026 (última aula) = 01h UTC do dia 30/10/2026
+const CERT_UNLOCK = new Date('2026-10-30T01:00:00Z')
 
 // ─────────────────────────────────────────────
 // TYPES
