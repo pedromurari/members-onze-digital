@@ -40,29 +40,29 @@ const AULAS: Aula[] = [
   {
     id: 1,
     titulo: 'Aula 1 — O Despertar',
-    data: '27/10 · Terça-feira',
+    data: '03/11 · Terça-feira',
     horario: '20h (Horário de Brasília)',
     youtubeUrl: 'https://youtube.com/live/GlwwOCnYb2g',
     imageUrl: 'https://img.youtube.com/vi/GlwwOCnYb2g/maxresdefault.jpg',
-    gcal: { titulo: 'SDW #47 — Aula 1', inicio: '20261027T230000Z', fim: '20261028T010000Z', desc: 'Aula 1 da Semana do Despertar #47 · IDM' },
+    gcal: { titulo: 'SDW #47 — Aula 1', inicio: '20261103T230000Z', fim: '20261104T010000Z', desc: 'Aula 1 da Semana do Despertar #47 · IDM' },
   },
   {
     id: 2,
     titulo: 'Aula 2 — A Cura',
-    data: '28/10 · Quarta-feira',
+    data: '04/11 · Quarta-feira',
     horario: '20h (Horário de Brasília)',
     youtubeUrl: 'https://youtube.com/live/9XI7J0bEg-o',
     imageUrl: 'https://img.youtube.com/vi/9XI7J0bEg-o/maxresdefault.jpg',
-    gcal: { titulo: 'SDW #47 — Aula 2', inicio: '20261028T230000Z', fim: '20261029T010000Z', desc: 'Aula 2 da Semana do Despertar #47 · IDM' },
+    gcal: { titulo: 'SDW #47 — Aula 2', inicio: '20261104T230000Z', fim: '20261105T010000Z', desc: 'Aula 2 da Semana do Despertar #47 · IDM' },
   },
   {
     id: 3,
     titulo: 'Aula 3 — A Revelação',
-    data: '29/10 · Quinta-feira',
+    data: '05/11 · Quinta-feira',
     horario: '20h (Horário de Brasília)',
     youtubeUrl: 'https://youtube.com/live/JeSYlKYx9P4',
     imageUrl: 'https://img.youtube.com/vi/JeSYlKYx9P4/maxresdefault.jpg',
-    gcal: { titulo: 'SDW #47 — Aula 3', inicio: '20261029T230000Z', fim: '20261030T010000Z', desc: 'Aula 3 da Semana do Despertar #47 · IDM' },
+    gcal: { titulo: 'SDW #47 — Aula 3', inicio: '20261105T230000Z', fim: '20261106T010000Z', desc: 'Aula 3 da Semana do Despertar #47 · IDM' },
   },
 ]
 
@@ -70,8 +70,8 @@ const XP_PER_STEP = 200
 const TOTAL_STEPS  = 3
 const STORAGE_KEY  = 'sdw47_progress'
 
-// 22h Horário de Brasília em 29/10/2026 (última aula) = 01h UTC do dia 30/10/2026
-const CERT_UNLOCK = new Date('2026-10-30T01:00:00Z')
+// 22h Horário de Brasília em 05/11/2026 (última aula) = 01h UTC do dia 06/11/2026
+const CERT_UNLOCK = new Date('2026-11-06T01:00:00Z')
 
 // ─────────────────────────────────────────────
 // TYPES
