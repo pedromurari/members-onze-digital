@@ -42,8 +42,8 @@ const AULAS: Aula[] = [
     titulo: 'Aula 1 — O Despertar',
     data: '03/11 · Terça-feira',
     horario: '20h (Horário de Brasília)',
-    youtubeUrl: 'https://youtube.com/live/DGJXWiggQqo',
-    imageUrl: 'https://img.youtube.com/vi/DGJXWiggQqo/maxresdefault.jpg',
+    youtubeUrl: 'https://youtube.com/live/T6LfqzG8eso',
+    imageUrl: 'https://img.youtube.com/vi/T6LfqzG8eso/maxresdefault.jpg',
     gcal: { titulo: 'SDW #47 — Aula 1', inicio: '20261103T230000Z', fim: '20261104T010000Z', desc: 'Aula 1 da Semana do Despertar #47 · IDM' },
   },
   {
